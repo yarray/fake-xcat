@@ -35,4 +35,12 @@ Examples:
 `./psh-scripts.py <nodes> <command>`
 
 The psh-scripts tool push a script to remote machines and execute it locally.
-It is highly useful when the commands are too complex and 
+It is highly useful when the commands are too complex and cannot be written inline.
+
+### pscp-py
+
+Push to multiple remote machines
+
+`./pscp.py <file> <nodes>:<file>`
+
+For getting please use normal scp

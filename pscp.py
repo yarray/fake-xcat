@@ -2,7 +2,7 @@
 
 import args
 import sys
-from fabric.operations import put, get, env
+from fabric.operations import put, env
 from fabric.main import main
 
 
@@ -10,23 +10,9 @@ env.user = args.user()
 env.password = args.password()
 
 
-def ssh(target, dest, mode):
-    if mode == 'put':
-        put(target, dest)
-    else:
-        get(target, dest)
-
-
 def _parse(target_desc, dest_desc):
-    print dest_desc
-    to_remote = (':' in dest_desc)
-
-    if to_remote:
-        return (target_desc, dest_desc.split(':')[1],
-                dest_desc.split(':')[0], 'put')
-    else:
-        return (target_desc.split(':')[1], dest_desc,
-                target_desc.split(':')[0], 'get')
+    return (target_desc, dest_desc.split(':')[-1],
+            dest_desc[:dest_desc.rindex(':')])
 
 
 if __name__ == '__main__':
@@ -34,6 +20,5 @@ if __name__ == '__main__':
     hosts = reduce(lambda x, y: x + ';' + y, args.parse_targets(host_desc))
     sys.argv = ['fab',
                 '-f', __file__,
-                'ssh:{0},{1},{2},hosts={3}'.format(target,
-                                                   dest, mode, hosts)]
+                'put:{0},{1},hosts={2}'.format(target, dest, hosts)]
     main()
